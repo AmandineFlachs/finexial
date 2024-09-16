@@ -129,37 +129,37 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                     )
 
                 # Render the output sliders to customize the generation output. 
-                #with gr.Tabs(selected=0, visible=False) as out_tabs:
-                    #with gr.TabItem("Max Tokens in Response", id=0) as max_tokens_in_response:
-                        #num_token_slider = gr.Slider(0, utils.preset_max_tokens()[1], value=utils.preset_max_tokens()[0], 
-                                                     #label=info.num_token_label, 
-                                                     #interactive=True)
+                with gr.Tabs(selected=0, visible=False) as out_tabs:
+                    with gr.TabItem("Max Tokens in Response", id=0) as max_tokens_in_response:
+                        num_token_slider = gr.Slider(0, utils.preset_max_tokens()[1], value=utils.preset_max_tokens()[0], 
+                                                     label=info.num_token_label, 
+                                                     interactive=True)
                         
-                    #with gr.TabItem("Temperature", id=1) as temperature:
-                        #temp_slider = gr.Slider(0, 1, value=0.7, 
-                                                #label=info.temp_label, 
-                                                #interactive=True)
+                with gr.TabItem("Temperature", id=1) as temperature:
+                        temp_slider = gr.Slider(0, 1, value=0.7, 
+                                            label=info.temp_label, 
+                                                interactive=True)
                         
-                    #with gr.TabItem("Top P", id=2) as top_p:
+                    with gr.TabItem("Top P", id=2) as top_p:
                         #top_p_slider = gr.Slider(0.001, 0.999, value=0.999, 
-                                                 #label=info.top_p_label, 
-                                                 #interactive=True)
+                                                 label=info.top_p_label, 
+                                                 interactive=True)
                         
-                    #with gr.TabItem("Frequency Penalty", id=3) as freq_pen:
-                        #freq_pen_slider = gr.Slider(-2, 2, value=0, 
-                                                    #label=info.freq_pen_label, 
-                                                    #interactive=True)
+                    with gr.TabItem("Frequency Penalty", id=3) as freq_pen:
+                        freq_pen_slider = gr.Slider(-2, 2, value=0, 
+                                                    label=info.freq_pen_label, 
+                                                    interactive=True)
                         
-                    #with gr.TabItem("Presence Penalty", id=4) as pres_pen:
-                        #pres_pen_slider = gr.Slider(-2, 2, value=0, 
-                                                    #label=info.pres_pen_label, 
-                                                    #interactive=True)
+                    with gr.TabItem("Presence Penalty", id=4) as pres_pen:
+                        pres_pen_slider = gr.Slider(-2, 2, value=0, 
+                                                    label=info.pres_pen_label, 
+                                                    interactive=True)
                         
-                    #with gr.TabItem("Hide Output Tools", id=5) as hide_out_tools:
-                        #gr.Markdown("")
+                    with gr.TabItem("Hide Output Tools", id=5) as hide_out_tools:
+                        gr.Markdown("")
 
                 # Hidden button to expand output sliders, if hidden
-                #out_tabs_show = gr.Button(value="Show Output Tools", size="sm", visible=True)
+                out_tabs_show = gr.Button(value="Show Output Tools", size="sm", visible=True)
 
                 # Render the user input textbox and checkbox to toggle vanilla inference and RAG.
                 with gr.Row(equal_height=True):
