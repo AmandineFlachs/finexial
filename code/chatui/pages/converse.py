@@ -223,7 +223,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                     elem_id="rag-inputs")
                                 
                                 local_model_id = gr.Dropdown(choices = ["nvidia/Llama3-ChatQA-1.5-8B",
-                                                                        "microsoft/Phi-3-mini-128k-instruct, nvidia/Nemotron-Mini-4B-Instruct"], 
+                                                                        "microsoft/Phi-3-mini-128k-instruct, nvidia/Nemotron-4-340B-Instruct"], 
                                                              value = "nvidia/Llama3-ChatQA-1.5-8B",
                                                              interactive = True,
                                                              label = "Select a model (or input your own).", 
