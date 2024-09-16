@@ -16,7 +16,7 @@
 ### Markdown used to render certain documentation on the gradio application. ###
 
 setup = """
-Welcome to the Hybrid RAG example project for NVIDIA AI Workbench! \n\nTo get started, click the following button to set up the backend API server and vector database. This is a one-time process and may take a few moments to complete.
+To get started, click the following button to set up the backend API server and vector database. This is a one-time process and may take a few moments to complete.
 """
 
 update_kb_info = """

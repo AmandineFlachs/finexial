@@ -159,7 +159,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                         gr.Markdown("")
 
                 # Hidden button to expand output sliders, if hidden
-                out_tabs_show = gr.Button(value="Show Output Tools", size="sm", visible=True)
+                out_tabs_show = gr.Button(value="Show Output Tools", size="sm", visible=False)
 
                 # Render the user input textbox and checkbox to toggle vanilla inference and RAG.
                 with gr.Row(equal_height=True):
@@ -189,31 +189,54 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
             with gr.Column(scale=10, min_width=450, visible=True) as settings_column:
                 with gr.Tabs(selected=0) as settings_tabs:
 
-                    # First tab item is a button to start the RAG backend and unlock other settings
+                    # This tab item is a button to start the RAG backend and unlock other settings
                     with gr.TabItem("Initial Setup", id=0, interactive=False, visible=True) as setup_settings:
                         gr.Markdown("<br> ")
                         gr.Markdown(info.setup)
                         rag_start_button = gr.Button(value="Set Up RAG Backend", variant="primary")
                         gr.Markdown("<br> ")
 
-                    # Second tab item consists of all the inference mode settings
-                    with gr.TabItem("Inference Settings", id=1, interactive=False, visible=True) as inf_settings:
-                        inference_mode = gr.Radio(["Local System", "Cloud Endpoint", "Self-Hosted Microservice"], 
+                    # First tab item consists of database and document upload settings
+                    with gr.TabItem("Upload Documents Here", id=1, interactive=False, visible=True) as vdb_settings:
+                        
+                        gr.Markdown(info.update_kb_info)
+                        
+                        file_output = gr.File(interactive=True, 
+                                              show_label=False, 
+                                              file_types=["text",
+                                                          ".pdf",
+                                                          ".html",
+                                                          ".doc",
+                                                          ".docx",
+                                                          ".txt",
+                                                          ".odt",
+                                                          ".rtf",
+                                                          ".tex"], 
+                                              file_count="multiple")
+        
+                        with gr.Row():
+                            doc_show = gr.Button(value="Show Documents", size="sm")
+                            doc_hide = gr.Button(value="Hide Documents", visible=False, size="sm")
+                            clear_docs = gr.Button(value="Clear Database", interactive=False, size="sm") 
+
+                    # This tab item consists of all the inference mode settings
+                    with gr.TabItem("Inference Settings", id=2, interactive=False, visible=True) as inf_settings:
+                        inference_mode = gr.Radio(["Local System", "Cloud Endpoint"], 
                                                   label="Inference Mode", 
                                                   info=info.inf_mode_info, 
-                                                  value="Cloud Endpoint")
+                                                  value="Local System")
                         
                         # Depending on the selected inference mode, different settings need to get exposed to the user.
                         with gr.Tabs(selected=1) as tabs:
 
                             # Inference settings for local TGI inference server
-                            with gr.TabItem("Local System", id=0, interactive=False, visible=False) as local:
-                                with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
-                                    gr.Markdown(info.local_prereqs)
+                            with gr.TabItem("Local System", id=1, interactive=False, visible=False) as local:
+                                #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
+                                    #gr.Markdown(info.local_prereqs)
                                 with gr.Accordion("Instructions", open=False, elem_id="accordion"):
                                     gr.Markdown(info.local_info)
-                                with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.local_trouble)
+                                #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
+                                    #gr.Markdown(info.local_trouble)
 
                                 gate_checkbox = gr.CheckboxGroup(
                                     ["Ungated Models", "Gated Models"], 
@@ -244,26 +267,25 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
 
                             # Inference settings for cloud endpoints inference mode
                             with gr.TabItem("Cloud Endpoint", id=1, interactive=False, visible=False) as cloud:
-                                with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
-                                    gr.Markdown(info.cloud_prereqs)
-                                with gr.Accordion("Instructions", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.cloud_info)
-                                with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.cloud_trouble)
+                                #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
+                                    #gr.Markdown(info.cloud_prereqs)
+                                #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
+                                    #gr.Markdown(info.cloud_info)
+                                #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
+                                    #gr.Markdown(info.cloud_trouble)
                                 
-                                nvcf_model_family = gr.Dropdown(choices = ["Select", 
-                                                                           "NVIDIA", 
-                                                                           "MistralAI", 
-                                                                           "Meta", 
-                                                                           "Google",
-                                                                           "Microsoft", 
-                                                                           "Snowflake",
-                                                                           "IBM",
-                                                                           "Upstage",
-                                                                           "AI21 Labs"], 
+                                nvcf_model_family = gr.Dropdown(choices = ["Select", "NVIDIA"],
+                                                                           #"MistralAI", 
+                                                                           #"Meta", 
+                                                                           #"Google",
+                                                                           #"Microsoft", 
+                                                                           #"Snowflake",
+                                                                           #"IBM",
+                                                                           #"Upstage",
+                                                                           #"AI21 Labs"],
                                                                 value = "Select", 
                                                                 interactive = True,
-                                                                label = "Select a model family.", 
+                                                                label = "Model family.", 
                                                                 elem_id="rag-inputs")
                                 nvcf_model_id = gr.Dropdown(choices = ["Select"], 
                                                             value = "Select",
@@ -318,36 +340,14 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                                                         size="sm")
                                             stop_local_nim = gr.Button(value="Stop Microservice", interactive=False, size="sm")
 
-                    # Third tab item consists of database and document upload settings
-                    with gr.TabItem("Upload Documents Here", id=2, interactive=False, visible=True) as vdb_settings:
-                        
-                        gr.Markdown(info.update_kb_info)
-                        
-                        file_output = gr.File(interactive=True, 
-                                              show_label=False, 
-                                              file_types=["text",
-                                                          ".pdf",
-                                                          ".html",
-                                                          ".doc",
-                                                          ".docx",
-                                                          ".txt",
-                                                          ".odt",
-                                                          ".rtf",
-                                                          ".tex"], 
-                                              file_count="multiple")
-        
-                        with gr.Row():
-                            doc_show = gr.Button(value="Show Documents", size="sm")
-                            doc_hide = gr.Button(value="Hide Documents", visible=False, size="sm")
-                            clear_docs = gr.Button(value="Clear Database", interactive=False, size="sm") 
 
                     # Final tab item consists of option to collapse the settings to reduce clutter on the UI
-                    with gr.TabItem("Hide All Settings", id=3, visible=False) as hide_all_settings:
-                        gr.Markdown("")
+                    #with gr.TabItem("Hide All Settings", id=3, visible=False) as hide_all_settings:
+                        #gr.Markdown("")
 
             # Hidden column to be rendered when the user collapses all settings.
-            with gr.Column(scale=1, min_width=100, visible=False) as hidden_settings_column:
-                show_settings = gr.Button(value="< Expand", size="sm")
+            #with gr.Column(scale=1, min_width=100, visible=False) as hidden_settings_column:
+                #show_settings = gr.Button(value="< Expand", size="sm")
 
         def _toggle_gated(models: List[str]) -> Dict[gr.component, Dict[Any, Any]]:
             """" Event listener to toggle local models displayed to the user. """
@@ -356,7 +356,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 selected = ""
             elif len(models) == 1 and models[0] == "Ungated Models":
                 choices = ["nvidia/Llama3-ChatQA-1.5-8B",
-                           "microsoft/Phi-3-mini-128k-instruct"]
+                           "microsoft/Phi-3-mini-128k-instruct", "nvidia/Nemotron-Mini-4B-Instruct"]
                 selected = "nvidia/Llama3-ChatQA-1.5-8B"
             elif len(models) == 1 and models[0] == "Gated Models":
                 choices = ["mistralai/Mistral-7B-Instruct-v0.1",
@@ -429,24 +429,24 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
 
         out_tabs_show.click(_toggle_show_out_tools, None, [out_tabs, out_tabs_show])
 
-        def _toggle_hide_all_settings() -> Dict[gr.component, Dict[Any, Any]]:
-            """ Event listener to hide inference settings pane from the user. """
-            return {
-                settings_column: gr.update(visible=False),
-                hidden_settings_column: gr.update(visible=True),
-            }
+        #def _toggle_hide_all_settings() -> Dict[gr.component, Dict[Any, Any]]:
+           # """ Event listener to hide inference settings pane from the user. """
+            #return {
+                #settings_column: gr.update(visible=False),
+                #hidden_settings_column: gr.update(visible=True),
+            #}
 
-        hide_all_settings.select(_toggle_hide_all_settings, None, [settings_column, hidden_settings_column])
+        #hide_all_settings.select(_toggle_hide_all_settings, None, [settings_column, hidden_settings_column])
 
-        def _toggle_show_all_settings() -> Dict[gr.component, Dict[Any, Any]]:
-            """ Event listener to expand inference settings pane for the user. """
-            return {
-                settings_column: gr.update(visible=True),
-                settings_tabs: gr.update(selected=1),
-                hidden_settings_column: gr.update(visible=False),
-            }
+        #def _toggle_show_all_settings() -> Dict[gr.component, Dict[Any, Any]]:
+           # """ Event listener to expand inference settings pane for the user. """
+            #return {
+                #settings_column: gr.update(visible=True),
+                #settings_tabs: gr.update(selected=1),
+                #hidden_settings_column: gr.update(visible=False),
+            #}
 
-        show_settings.click(_toggle_show_all_settings, None, [settings_column, settings_tabs, hidden_settings_column])
+        #show_settings.click(_toggle_show_all_settings, None, [settings_column, settings_tabs, hidden_settings_column])
 
         def _toggle_model_download(btn: str, model: str, start: str, stop: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to download model weights locally for Hugging Face TGI local inference. """
@@ -513,7 +513,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                            "Llama3 ChatQA-1.5 70B", 
                            "Nemotron Mini 4B", 
                            "Nemotron-4 340B Instruct", 
-                           "Mistral-NeMo 12B Instruct"]
+                           "Mistral-NeMo 12B Instruct",]
                 value = "Llama3 ChatQA-1.5 8B"
                 visible = True
             elif family == "MistralAI":
@@ -1045,11 +1045,11 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 inf_settings: gr.update(visible=visibility[1], interactive=interactive[1]),
                 vdb_settings: gr.update(visible=visibility[2], interactive=interactive[2]),
                 submit_btn: gr.update(value=submit_value, interactive=interactive[3]),
-                hide_all_settings: gr.update(visible=visibility[3]),
+                #hide_all_settings: gr.update(visible=visibility[3]),
                 msg: gr.update(interactive=True, placeholder="[NOT READY] Select a model OR Select a Different Inference Mode." if rc != 1 else "Enter text and press SUBMIT"),
             }
         
-        rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, inf_settings, vdb_settings, submit_btn, hide_all_settings, msg])
+        rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, inf_settings, vdb_settings, submit_btn, msg])
 
         def _toggle_remote_ms() -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to select the remote-microservice inference mode for microservice inference. """
