@@ -135,15 +135,15 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                                      label=info.num_token_label, 
                                                      interactive=True)
                         
-                with gr.TabItem("Temperature", id=1) as temperature:
+                    with gr.TabItem("Temperature", id=1) as temperature:
                         temp_slider = gr.Slider(0, 1, value=0.7, 
-                                            label=info.temp_label, 
-                                                interactive=True)
+                                                    label=info.temp_label, 
+                                                    interactive=True)
                         
                     with gr.TabItem("Top P", id=2) as top_p:
-                        #top_p_slider = gr.Slider(0.001, 0.999, value=0.999, 
-                                                 label=info.top_p_label, 
-                                                 interactive=True)
+                        top_p_slider = gr.Slider(0.001, 0.999, value=0.999, 
+                                                    label=info.top_p_label, 
+                                                    interactive=True)
                         
                     with gr.TabItem("Frequency Penalty", id=3) as freq_pen:
                         freq_pen_slider = gr.Slider(-2, 2, value=0, 
@@ -179,11 +179,11 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 # Render the row of buttons: submit query, clear history, show metrics and contexts
                 with gr.Row():
                     submit_btn = gr.Button(value="[TESTTEST] Submit", interactive=False)
-                    #_ = gr.ClearButton([msg, chatbot, metrics, metrics_history], value="Clear history")
-                    #mtx_show = gr.Button(value="Show Metrics")
-                    #mtx_hide = gr.Button(value="Hide Metrics", visible=False)
-                    #ctx_show = gr.Button(value="Show Context")
-                    #ctx_hide = gr.Button(value="Hide Context", visible=False)
+                    _ = gr.ClearButton([msg, chatbot, metrics, metrics_history], value="Clear history")
+                    mtx_show = gr.Button(value="Show Metrics")
+                    mtx_hide = gr.Button(value="Hide Metrics", visible=False)
+                    ctx_show = gr.Button(value="Show Context")
+                    ctx_hide = gr.Button(value="Hide Context", visible=False)
 
             # Right Column will display the inference and database settings
             with gr.Column(scale=10, min_width=450, visible=True) as settings_column:
