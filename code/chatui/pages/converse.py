@@ -179,11 +179,11 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 # Render the row of buttons: submit query, clear history, show metrics and contexts
                 with gr.Row():
                     submit_btn = gr.Button(value="[NOT READY] Submit", interactive=False)
-                    _ = gr.ClearButton([msg, chatbot, metrics, metrics_history], value="Clear history")
-                    mtx_show = gr.Button(value="Show Metrics")
-                    mtx_hide = gr.Button(value="Hide Metrics", visible=False)
-                    ctx_show = gr.Button(value="Show Context")
-                    ctx_hide = gr.Button(value="Hide Context", visible=False)
+                    #_ = gr.ClearButton([msg, chatbot, metrics, metrics_history], value="Clear history")
+                    #mtx_show = gr.Button(value="Show Metrics")
+                    #mtx_hide = gr.Button(value="Hide Metrics", visible=False)
+                    #ctx_show = gr.Button(value="Show Context")
+                    #ctx_hide = gr.Button(value="Hide Context", visible=False)
 
             # Right Column will display the inference and database settings
             with gr.Column(scale=10, min_width=450, visible=True) as settings_column:
