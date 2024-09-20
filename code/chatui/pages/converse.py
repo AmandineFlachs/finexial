@@ -69,7 +69,7 @@ _LOCAL_CSS = """
 #accordion {
 }
 #rag-inputs .svelte-1gfkn6j {
-    color: #76b900;
+    color: #8F8FD6;
 }
 """
 
@@ -87,8 +87,9 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
 
     with gr.Blocks(title=TITLE, theme=kui_theme, css=kui_styles + _LOCAL_CSS) as page:
         # create the page header
-        gr.Markdown(f"# {TITLE}")
-
+        #gr.Markdown(f"# {TITLE}" )
+        gr.Image("chatui/static/Finexial_logo.png", height=75, width=125, min_width=125, show_share_button=False, show_download_button=False, container=False)
+    
         # Keep track of state we want to persist across user actions
         which_nim_tab = gr.State(0)
         is_local_nim = gr.State(False)
@@ -167,13 +168,13 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                         msg = gr.Textbox(
                             show_label=False,
                             lines=3,
-                            placeholder="Enter text and press SUBMIT",
+                            placeholder="Enter your text and press SUBMIT",
                             container=False,
                             interactive=True,
                         )
                     with gr.Column(scale=1, min_width=100):
                         kb_checkbox = gr.CheckboxGroup(
-                            ["Toggle to use Vector Database"], label="Vector Database", info="Supply your uploaded documents to the chatbot"
+                            ["Document uploaded"], label="Document status", info=" "
                         )
 
                 # Render the row of buttons: submit query, clear history, show metrics and contexts

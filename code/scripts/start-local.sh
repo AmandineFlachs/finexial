@@ -17,7 +17,7 @@ fi
 
 # Wait for service to be reachable.
 ATTEMPTS=0
-MAX_ATTEMPTS=30
+MAX_ATTEMPTS=3000
 
 while [ $(curl -o /dev/null -s -w "%{http_code}" "http://localhost:9090/info") -ne 200 ]; 
 do 
@@ -29,7 +29,7 @@ do
   fi
   
   echo "Polling inference server. Awaiting status 200; trying again in 5s. "
-  sleep 5
+  sleep 30
 done 
 
 echo "Service reachable. Happy chatting!"
