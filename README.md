@@ -43,19 +43,31 @@ IMAGE TO ADD
 Finexial has been designed to be easy to run and use thanks to [Nvidia AI Workbench](https://www.nvidia.com/en-gb/deep-learning-ai/solutions/data-science/workbench/). It currently relies on the non-gated [nvidia/Llama3-ChatQA-1.5-8B](https://build.nvidia.com/nvidia/chatqa-1-5-8b) model. 
 
 ### Follow the steps to set up Finxial:
-* Install and configure [Nvidia AI Workbench](https://www.nvidia.com/en-gb/deep-learning-ai/solutions/data-science/workbench/) locally and open up AI Workbench [(see the doc for more info and troubleshooting)](https://docs.nvidia.com/ai-workbench/user-guide/latest/overview/introduction.html). 
+* Install and configure [Nvidia AI Workbench](https://www.nvidia.com/en-gb/deep-learning-ai/solutions/data-science/workbench/) locally and open up AI Workbench [(see the documentation for more info)](https://docs.nvidia.com/ai-workbench/user-guide/latest/overview/introduction.html). NVIDIA AI Workbench is a free client application that handles Git repositories and containers and manages dev environments. 
 * Fork this repository into your own GitHub account.
 * Inside AI Workbench:
     * Click Clone Project and enter the GitHub repository URL of your newly-forked repo.
     * AI Workbench will automatically clone the repo and build out the project environment, which can take a while to complete.
-    * In the Environment tab, add your own token (key) in the Secret section for both the HUGGING_FACE_HUB_TOKEN and NVCF_RUN_KEY. 
+    * In the Environment tab, add your own token (key) in the Secret section for both the HUGGING_FACE_HUB_TOKEN and NVCF_RUN_KEY. You will need to create a free account respectively on [Hugging Face](https://huggingface.co) and [NVIDIA NGN](https://ngc.nvidia.com/signin) even if you plan to use Finexial locally.
+    * Still in the Environment tab, click on Start Environment.
+    * Then click on Start Chat to launch the application. A new tab in your web browser will automatically open. 
 
-**Note:** [NVIDIA AI Workbench](https://www.youtube.com/watch?v=ntMRzPzSvM4) is the easiest way to get this RAG app running.
-- NVIDIA AI Workbench is a <ins>free client application</ins> that you can install on your own machines.
-- It provides portable and reproducible dev environments by handling Git repos and containers for you.
-- Installing on a local system? Check out our guides here for [Windows](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/windows.html), [Local Ubuntu 22.04](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/ubuntu-local.html) and for [macOS 12 or higher](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/macos.html)
-- Installing on a remote system? Check out our guide for [Remote Ubuntu 22.04](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/ubuntu-remote.html)
+You are now ready to go!
 
+### How to use Finexial
+
+Now that the system is set up, you can run Finexial:
+1. Choose your inference more (local or cloud).
+2. Click on the button Start Finexial.
+3. Upload your document(s) in pdf.
+4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At anytime you can start again from scratch by clearing your chat history (Clear History button) or remote the document(s) uploaded (Clear Database button). 
+
+### Hardware requirements for local inference
+
+While there are no hardware requirements for cloud inference, if you are running Finexial locally you will need to ensure you have sufficient GPU resources. For this project, I used an Nvidia RTX 3090. 
+
+## How it works
+    
 ### Table 1 Default Supported Models by Inference Mode
 
 <details>
