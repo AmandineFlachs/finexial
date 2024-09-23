@@ -14,11 +14,10 @@
   <a href="https://forums.developer.nvidia.com/t/support-workbench-example-project-agentic-rag/303414" style="color: #76B900;">:rotating_light: Facing Issues? Let Us Know!</a>
 </p> -->
 
-Finexial is an AI RAG project created for the [HackAI - Dell and NVIDIA Challenge](https://hackaichallenge.devpost.com). 
-It aims to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
-
 Companies expect 70% of their employee to heavily use data to make decisions by 2025, a jump of over 40% since 2018 (Tableau, 2021). Still, 74% of employees report feeling overwhelmed when working with data (Accenture, 2020). While a majority of business decisions are influenced by financial data, only 30% of employees from non-financial departments feel confident in their ability to understand and use financial information effectively (Deloitte, 2021). In the USA only, the lack of data and financial literacy is estimated to cost companies over $100B per year (Accenture, 2020).
 
+Finexial is an AI RAG project created for the [HackAI - Dell and NVIDIA Challenge](https://hackaichallenge.devpost.com). 
+It aims to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
 
 ## Repository
 
@@ -42,7 +41,7 @@ Finexial has been designed to be easy to run and use thanks to [Nvidia AI Workbe
 
 You are now ready to go!
 
-### How to use Finexial
+## How to use Finexial
 
 Now that the system is set up, you can run Finexial:
 1. Choose your inference mode (local or cloud).
