@@ -35,7 +35,7 @@ Finexial has been designed to be easy to run and use thanks to [Nvidia AI Workbe
 * Inside Nvidia AI Workbench:
     * Click ``CLONE PROJECT`` and enter the GitHub repository URL of your newly-forked repo.
     * Nvidia AI Workbench will automatically clone the repo and build out the project environment, which can take a while to complete.
-    * In the Environment tab, add your own token (key) in the Secret section for both the ``HUGGING_FACE_HUB_TOKEN`` and ``NVCF_RUN_KEY``. You will need to create a free account respectively on [Hugging Face](https://huggingface.co) and [NVIDIA NGN](https://ngc.nvidia.com/signin) even if you plan to use Finexial locally.
+    * In the Environment tab, add your own token (key) in the Secret section for both the ``HUGGING_FACE_HUB_TOKEN`` and ``NVCF_RUN_KEY``. You will need to create a free account respectively on [Hugging Face](https://huggingface.co) and [NVIDIA NGC](https://ngc.nvidia.com/signin) even if you plan to use Finexial locally.
     * Still in the Environment tab, click on ``START ENVIRONMENT``.
     * Then click on ``START CHAT`` to launch the application. A new tab in your web browser will automatically open. 
 
