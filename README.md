@@ -15,30 +15,46 @@
 
 # Finexial - Project summary [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
 
-<!-- Banner Image -->
-<img src="https://developer-blogs.nvidia.com/wp-content/uploads/2024/07/rag-representation.jpg" width="100%">
+<!-- Banner Image 
+<img src="https://developer-blogs.nvidia.com/wp-content/uploads/2024/07/rag-representation.jpg" width="100%">-->
 
-<!-- Links -->
+<!-- Links
 <p align="center"> 
   <a href="https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/workbench/" style="color: #76B900;">:arrow_down: Download AI Workbench</a> •
   <a href="https://docs.nvidia.com/ai-workbench/" style="color: #76B900;">:book: Read the Docs</a> •
   <a href="https://docs.nvidia.com/ai-workbench/user-guide/latest/quickstart/example-projects.html" style="color: #76B900;">:open_file_folder: Explore Example Projects</a> •
   <a href="https://forums.developer.nvidia.com/t/support-workbench-example-project-agentic-rag/303414" style="color: #76B900;">:rotating_light: Facing Issues? Let Us Know!</a>
-</p>
+</p> -->
+
+Finexial is an AI RAG project created for the [HackAI - Dell and NVIDIA Challenge](https://hackaichallenge.devpost.com). 
+It aims to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
+
+Companies expect 70% of their employee to heavily use data to make decisions by 2025, a jump of over 40% since 2018 (Tableau, 2021). Still, 74% of employees report feeling overwhelmed when working with data (Accenture, 2020). While a majority of business decisions are influenced by financial data, only 30% of employees from non-financial departments feel confident in their ability to understand and use financial information effectively (Deloitte, 2021). In the USA only, the lack of data and financial literacy is estimated to cost companies over $100B per year (Accenture, 2020).
+
+**Finexial is an AI-powered tool designed to understand financial reports, discuss reports' outcome and explain any financial jargon.**
+
+# Repository
+
+The following files are included in the repository
+IMAGE TO ADD
+
+## Set up and run Finexial
+
+Finexial has been designed to be easy to run and use thanks to [Nvidia AI Workbench](https://www.nvidia.com/en-gb/deep-learning-ai/solutions/data-science/workbench/). It currently relies on the non-gated [nvidia/Llama3-ChatQA-1.5-8B](https://build.nvidia.com/nvidia/chatqa-1-5-8b) model. 
+
+### Follow the steps to set up Finxial:
+* Install and configure [Nvidia AI Workbench](https://www.nvidia.com/en-gb/deep-learning-ai/solutions/data-science/workbench/) locally and open up AI Workbench [(see the doc for more info and troubleshooting)](https://docs.nvidia.com/ai-workbench/user-guide/latest/overview/introduction.html). 
+* Fork this repository into your own GitHub account.
+* Inside AI Workbench:
+    * Click Clone Project and enter the GitHub repository URL of your newly-forked repo.
+    * AI Workbench will automatically clone the repo and build out the project environment, which can take a while to complete.
+    * In the Environment tab, add your own token (key) in the Secret section for both the HUGGING_FACE_HUB_TOKEN and NVCF_RUN_KEY. 
 
 **Note:** [NVIDIA AI Workbench](https://www.youtube.com/watch?v=ntMRzPzSvM4) is the easiest way to get this RAG app running.
 - NVIDIA AI Workbench is a <ins>free client application</ins> that you can install on your own machines.
 - It provides portable and reproducible dev environments by handling Git repos and containers for you.
 - Installing on a local system? Check out our guides here for [Windows](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/windows.html), [Local Ubuntu 22.04](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/ubuntu-local.html) and for [macOS 12 or higher](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/macos.html)
 - Installing on a remote system? Check out our guide for [Remote Ubuntu 22.04](https://docs.nvidia.com/ai-workbench/user-guide/latest/installation/ubuntu-remote.html)
-
-## Project Description
-This is an [NVIDIA AI Workbench](https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/workbench/) project for developing a [Retrieval Augmented Generation](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/) application with a customizable Gradio Chat app. It lets you:
-* Embed your documents into a locally running vector database.
-* Run inference **locally** on a Hugging Face TGI server, in the **cloud** using NVIDIA inference endpoints, or using **microservices** via [NVIDIA Inference Microservices (NIMs)](https://www.nvidia.com/en-us/ai/):
-    * 4-bit, 8-bit, and no quantization options are supported for locally running models served by TGI.
-    * Other models may be specified to run locally using their Hugging Face tag.
-    * Locally-running microservice option is supported for Docker users only.
 
 ### Table 1 Default Supported Models by Inference Mode
 
