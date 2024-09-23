@@ -190,10 +190,10 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 with gr.Tabs(selected=0) as settings_tabs:
 
                     # This tab item is a button to start the RAG backend and unlock other settings
-                    with gr.TabItem("Initial Setup", id=0, interactive=False, visible=True) as setup_settings:
+                    with gr.TabItem("Setup", id=0, interactive=False, visible=True) as setup_settings:
                         gr.Markdown("<br> ")
                         gr.Markdown(info.setup)
-                        rag_start_button = gr.Button(value="Set Up RAG Backend", variant="primary")
+                        rag_start_button = gr.Button(value="Start Finexial", variant="primary")
                         gr.Markdown("<br> ")
 
                     # First tab item consists of database and document upload settings

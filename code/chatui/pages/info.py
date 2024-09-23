@@ -16,7 +16,7 @@
 ### Markdown used to render certain documentation on the gradio application. ###
 
 setup = """
-To get started, click the following button to set up the backend API server and vector database. This is a one-time process and may take a few moments to complete.
+Click the following button to start Finexial! This is a one-time process and may take a few moments to complete as it needs to download and set up the right components to run the app.
 """
 
 update_kb_info = """
