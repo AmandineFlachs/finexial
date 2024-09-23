@@ -1,18 +1,3 @@
-# Table of Contents
-* [Introduction](#nvidia-ai-workbench-introduction-)
-   * [Project Description](#project-description)
-     * [Supported Models](#table-1-default-supported-models-by-inference-mode)
-* [Quickstart](#quickstart)
-   * [Prerequisites](#prerequisites)
-   * [Tutorial: Using a Cloud Endpoint](#tutorial-using-a-cloud-endpoint)
-* [Troubleshooting](#troubleshooting)
-* [Advanced Tutorials](#advanced-tutorials)
-   * [Tutorial 1: Using a Local GPU](#tutorial-1-using-a-local-gpu)
-   * [Tutorial 2: Using a Remote Microservice](#tutorial-2-using-a-remote-microservice)
-   * [Tutorial 3: Using a Local Microservice](#tutorial-3-using-a-local-microservice)
-   * [Tutorial 4: Customizing the Gradio App](#tutorial-4-customizing-the-gradio-app)
-* [License](#license)
-
 # Finexial - Project summary [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
 
 <!-- Banner Image 
@@ -33,7 +18,7 @@ Companies expect 70% of their employee to heavily use data to make decisions by 
 
 **Finexial is an AI-powered tool designed to understand financial reports, discuss reports' outcome and explain any financial jargon.**
 
-# Repository
+## Repository
 
 The following files are included in the repository
 IMAGE TO ADD
