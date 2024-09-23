@@ -1,6 +1,7 @@
-# Finexial
+# Finexial [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
+### Finexial is an AI-powered tool designed to understand financial reports, discuss reports' outcome and explain any financial jargon.
 
-## Project summary [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
+## Project summary 
 
 <!-- Banner Image 
 <img src="https://developer-blogs.nvidia.com/wp-content/uploads/2024/07/rag-representation.jpg" width="100%">-->
@@ -18,7 +19,6 @@ It aims to help non-financial employees make the most of their financial data an
 
 Companies expect 70% of their employee to heavily use data to make decisions by 2025, a jump of over 40% since 2018 (Tableau, 2021). Still, 74% of employees report feeling overwhelmed when working with data (Accenture, 2020). While a majority of business decisions are influenced by financial data, only 30% of employees from non-financial departments feel confident in their ability to understand and use financial information effectively (Deloitte, 2021). In the USA only, the lack of data and financial literacy is estimated to cost companies over $100B per year (Accenture, 2020).
 
-### **Finexial is an AI-powered tool designed to understand financial reports, discuss reports' outcome and explain any financial jargon.**
 
 ## Repository
 
