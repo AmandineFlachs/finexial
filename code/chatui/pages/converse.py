@@ -121,7 +121,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                         visible=False,
                         elem_id="contextbox",
                     )
-
+                    
                     docs = gr.JSON(
                         scale=1,
                         label="Documents",
@@ -181,9 +181,8 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 with gr.Row():
                     submit_btn = gr.Button(value="[NOT READY] Submit", interactive=False)
                     _ = gr.ClearButton([msg, chatbot, metrics, metrics_history], value="Clear history")
-                    mtx_show = gr.Button(value="Show Metrics")
+                    mtx_show = gr.Button(value="Show Metrics", visible=False)
                     mtx_hide = gr.Button(value="Hide Metrics", visible=False)
-                    ctx_show = gr.Button(value="Show Context")
                     ctx_hide = gr.Button(value="Hide Context", visible=False)
 
             # Right Column will display the inference and database settings
@@ -234,8 +233,8 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                             with gr.TabItem("Local System", id=1, interactive=False, visible=False) as local:
                                 #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
                                     #gr.Markdown(info.local_prereqs)
-                                with gr.Accordion("Instructions", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.local_info)
+                                #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
+                                    #gr.Markdown(info.local_info)
                                 #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
                                     #gr.Markdown(info.local_trouble)
 
@@ -405,9 +404,9 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 doc_hide: gr.update(visible=out[8]),
             }
 
-        ctx_show.click(_toggle_info, [ctx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #ctx_show.click(_toggle_info, [ctx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         ctx_hide.click(_toggle_info, [ctx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
-        mtx_show.click(_toggle_info, [mtx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #mtx_show.click(_toggle_info, [mtx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         mtx_hide.click(_toggle_info, [mtx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         doc_show.click(_toggle_info, [doc_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         doc_hide.click(_toggle_info, [doc_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])

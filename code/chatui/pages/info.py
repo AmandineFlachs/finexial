@@ -21,10 +21,10 @@ To get started, click the following button to set up the backend API server and 
 
 update_kb_info = """
 <br> 
-Upload your text files here. This will embed them in the vector database, and they will persist as potential context for the model until you clear the database. Careful, clearing the database is irreversible!
+Upload your files here. They will remain are be used as potential context for the model until you clear the database. Careful, clearing the database is irreversible!
 """
 
-inf_mode_info = "To use a CLOUD endpoint for inference, select the desired model before making a query."
+inf_mode_info = " "
 
 local_info = """
 First, select the desired model and quantization level. You can optionally filter the model list by gated vs ungated models. Then load the model. This will either download it or load it from cache. The download may take a few minutes depending on your network. 
