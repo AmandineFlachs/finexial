@@ -1,7 +1,7 @@
 specVersion: v2
 specMinorVersion: 2
 meta:
-  name: hybrid-rag
+  name: Finexial
   image: project-hybrid-rag
   description: Understand your financial data in a few clics
   labels: []

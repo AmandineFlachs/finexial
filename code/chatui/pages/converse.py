@@ -405,11 +405,11 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
             }
 
         #ctx_show.click(_toggle_info, [ctx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
-        ctx_hide.click(_toggle_info, [ctx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #ctx_hide.click(_toggle_info, [ctx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         #mtx_show.click(_toggle_info, [mtx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
-        mtx_hide.click(_toggle_info, [mtx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
-        doc_show.click(_toggle_info, [doc_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
-        doc_hide.click(_toggle_info, [doc_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #mtx_hide.click(_toggle_info, [mtx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #doc_show.click(_toggle_info, [doc_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
+        #doc_hide.click(_toggle_info, [doc_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
 
         def _toggle_hide_out_tools() -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to hide output toolbar from the user. """
