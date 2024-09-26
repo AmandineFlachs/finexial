@@ -47,7 +47,7 @@ Now that the system is set up, you can run Finexial:
 1. Choose your inference mode (local or cloud).
 2. Click on the button ``START FINEXIAL``.
 3. Upload your document(s) in pdf.
-4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At any time you can start again from scratch by clearing your chat history (``CLEAR HISTORY`` button) or remote the document(s) uploaded (``CLEAR DATABASE`` button). 
+4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At any time you can start again from scratch by clearing your chat history (``CLEAR HISTORY`` button) or remove the document(s) uploaded (``CLEAR DATABASE`` button). 
 
 ### Hardware requirements for local inference
 

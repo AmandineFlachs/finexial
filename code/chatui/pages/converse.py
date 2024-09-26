@@ -172,10 +172,10 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                             container=False,
                             interactive=True,
                         )
-                    with gr.Column(scale=1, min_width=100):
-                        kb_checkbox = gr.CheckboxGroup(
-                            ["Document uploaded"], label="Document status", info=" "
-                        )
+                    # with gr.Column(scale=1, min_width=100):
+                    #     kb_checkbox = gr.CheckboxGroup(
+                    #         ["Document uploaded"], label="Document status", info=" "
+                    #     )
 
                 # Render the row of buttons: submit query, clear history, show metrics and contexts
                 with gr.Row():
@@ -189,10 +189,65 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
             with gr.Column(scale=10, min_width=450, visible=True) as settings_column:
                 with gr.Tabs(selected=0) as settings_tabs:
 
+
                     # This tab item is a button to start the RAG backend and unlock other settings
                     with gr.TabItem("Setup", id=0, interactive=False, visible=True) as setup_settings:
                         gr.Markdown("<br> ")
-                        gr.Markdown(info.setup)
+                        
+                        # Select the inference mode settings
+                       
+                        inference_mode = gr.Radio(["Local System", "Cloud Endpoint"],
+                                                  label="Inference Mode",
+                                                  info=info.inf_mode_info,
+                                                  value="Local System")
+                        
+                        local_model_id = gr.State("nvidia/Llama3-ChatQA-1.5-8B")
+                        local_model_quantize = gr.State("4-Bit")
+                        
+                        with gr.Row(equal_height=True):
+                            download_model = gr.Button(value="Load Model", size="sm", visible=False)
+                            start_local_server = gr.Button(value="Start Server", interactive=False, size="sm", visible=False)
+                            stop_local_server = gr.Button(value="Stop Server", interactive=False, size="sm", visible=False)
+
+                        nvcf_model_family = gr.State("NVIDIA")
+                        nvcf_model_id = gr.State("Llama3 ChatQA-1.5 8B")
+
+                        with gr.Tabs(selected=0, visible=False) as nim_tabs:
+
+                            # Inference settings for remotely-running microservice
+                            with gr.TabItem("Remote", id=0) as remote_microservice:
+                                remote_nim_msg = gr.Markdown("<br />Enter the details below. Then start chatting!")
+                                        
+                                with gr.Row(equal_height=True):
+                                    nim_model_ip = gr.Textbox(placeholder = "10.123.45.678", 
+                                        label = "Microservice Host", 
+                                        info = "IP Address running the microservice", 
+                                        elem_id="rag-inputs", scale=2)
+                                    nim_model_port = gr.Textbox(placeholder = "8000", 
+                                        label = "Port", 
+                                        info = "Optional, (default: 8000)", 
+                                        elem_id="rag-inputs", scale=1)
+                                        
+                                    nim_model_id = gr.Textbox(placeholder = "meta/llama3-8b-instruct", 
+                                        label = "Model running in microservice.", 
+                                        info = "If none specified, defaults to: meta/llama3-8b-instruct", 
+                                        elem_id="rag-inputs")
+
+                            # Inference settings for locally-running microservice
+                            with gr.TabItem("Local", id=1) as local_microservice:
+                                gr.Markdown("<br />**Important**: For AI Workbench on DOCKER users only. Podman is unsupported!")
+                                        
+                                nim_local_model_id = gr.Textbox(placeholder = "nvcr.io/nim/meta/llama3-8b-instruct:latest", 
+                                            label = "NIM Container Image", 
+                                            elem_id="rag-inputs")
+                                        
+                                with gr.Row(equal_height=True):
+                                    prefetch_nim = gr.Button(value="Prefetch NIM", size="sm")
+                                    start_local_nim = gr.Button(value="Start Microservice", 
+                                                                interactive=(True if os.path.isdir('/mnt/host-home/model-store') else False), 
+                                                                size="sm")
+                                    stop_local_nim = gr.Button(value="Stop Microservice", interactive=False, size="sm")
+                                                
                         rag_start_button = gr.Button(value="Start Finexial", variant="primary")
                         gr.Markdown("<br> ")
 
@@ -215,194 +270,198 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                               file_count="multiple")
         
                         with gr.Row():
-                            doc_show = gr.Button(value="Show Documents", size="sm")
-                            doc_hide = gr.Button(value="Hide Documents", visible=False, size="sm")
+                            #doc_show = gr.Button(value="Show Documents", size="sm")
+                            #doc_hide = gr.Button(value="Hide Documents", visible=False, size="sm")
                             clear_docs = gr.Button(value="Clear Database", interactive=False, size="sm") 
 
-                    # This tab item consists of all the inference mode settings
-                    with gr.TabItem("Inference Settings", id=2, interactive=False, visible=True) as inf_settings:
-                        inference_mode = gr.Radio(["Local System", "Cloud Endpoint"], 
-                                                  label="Inference Mode", 
-                                                  info=info.inf_mode_info, 
-                                                  value="Local System")
+                    # # This tab item consists of all the inference mode settings
+                    # with gr.TabItem("Inference Settings", id=2, interactive=False, visible=True) as inf_settings:
+                    #     inference_mode = gr.Radio(["Local System", "Cloud Endpoint"], 
+                    #                               label="Inference Mode", 
+                    #                               info=info.inf_mode_info, 
+                    #                               value="Local System")
                         
-                        # Depending on the selected inference mode, different settings need to get exposed to the user.
-                        with gr.Tabs(selected=1) as tabs:
+                    #     # Depending on the selected inference mode, different settings need to get exposed to the user.
+                    #     with gr.Tabs(selected=1) as tabs:
 
-                            # Inference settings for local TGI inference server
-                            with gr.TabItem("Local System", id=1, interactive=False, visible=False) as local:
-                                #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
-                                    #gr.Markdown(info.local_prereqs)
-                                #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
-                                    #gr.Markdown(info.local_info)
-                                #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
-                                    #gr.Markdown(info.local_trouble)
+                    #         # Inference settings for local TGI inference server
+                    #         with gr.TabItem("Local System", id=1, interactive=False, visible=False) as local:
+                    #             #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
+                    #                 #gr.Markdown(info.local_prereqs)
+                    #             #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
+                    #                 #gr.Markdown(info.local_info)
+                    #             #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
+                    #                 #gr.Markdown(info.local_trouble)
 
-                                gate_checkbox = gr.CheckboxGroup(
-                                    ["Ungated Models", "Gated Models"], 
-                                    value=["Ungated Models"], 
-                                    label="Select which models types to show", 
-                                    interactive = True,
-                                    elem_id="rag-inputs")
+                    #             # gate_checkbox = gr.CheckboxGroup(
+                    #             #     ["Ungated Models", "Gated Models"], 
+                    #             #     value=["Ungated Models"], 
+                    #             #     label="Select which models types to show", 
+                    #             #     interactive = True,
+                    #             #     elem_id="rag-inputs")
+
+                    #             local_model_id = gr.State("nvidia/Llama3-ChatQA-1.5-8B")
+                    #             # local_model_id = gr.Dropdown(choices = ["nvidia/Llama3-ChatQA-1.5-8B",
+                    #             #                                        "microsoft/Phi-3-mini-128k-instruct", "nvidia/Nemotron-Mini-4B-Instruct"], 
+                    #             #                             value = "nvidia/Llama3-ChatQA-1.5-8B",
+                    #             #                             interactive = True,
+                    #             #                             label = "Select a model (or input your own).", 
+                    #             #                             allow_custom_value = True, 
+                    #             #                             elem_id="rag-inputs")
+                    #             local_model_quantize = gr.State("4-Bit")
+                    #             # local_model_quantize = gr.Dropdown(choices = ["None",
+                    #             #                                               "8-Bit",
+                    #             #                                               "4-Bit"], 
+                    #             #                                    value = utils.preset_quantization(),
+                    #             #                                    interactive = True,
+                    #             #                                    label = "Select model quantization.", 
+                    #             #                                    elem_id="rag-inputs")
                                 
-                                local_model_id = gr.Dropdown(choices = ["nvidia/Llama3-ChatQA-1.5-8B",
-                                                                        "microsoft/Phi-3-mini-128k-instruct", "nvidia/Nemotron-Mini-4B-Instruct"], 
-                                                             value = "nvidia/Llama3-ChatQA-1.5-8B",
-                                                             interactive = True,
-                                                             label = "Select a model (or input your own).", 
-                                                             allow_custom_value = True, 
-                                                             elem_id="rag-inputs")
-                                local_model_quantize = gr.Dropdown(choices = ["None",
-                                                                              "8-Bit",
-                                                                              "4-Bit"], 
-                                                                   value = utils.preset_quantization(),
-                                                                   interactive = True,
-                                                                   label = "Select model quantization.", 
-                                                                   elem_id="rag-inputs")
-                                
-                                with gr.Row(equal_height=True):
-                                    download_model = gr.Button(value="Load Model", size="sm")
-                                    start_local_server = gr.Button(value="Start Server", interactive=False, size="sm")
-                                    stop_local_server = gr.Button(value="Stop Server", interactive=False, size="sm")
+                    #             with gr.Row(equal_height=True):
+                    #                 download_model = gr.Button(value="Load Model", size="sm")
+                    #                 start_local_server = gr.Button(value="Start Server", interactive=False, size="sm")
+                    #                 stop_local_server = gr.Button(value="Stop Server", interactive=False, size="sm")
 
-                            # Inference settings for cloud endpoints inference mode
-                            with gr.TabItem("Cloud Endpoint", id=1, interactive=False, visible=False) as cloud:
-                                #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
-                                    #gr.Markdown(info.cloud_prereqs)
-                                #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
-                                    #gr.Markdown(info.cloud_info)
-                                #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
-                                    #gr.Markdown(info.cloud_trouble)
+                    #         # Inference settings for cloud endpoints inference mode
+                    #         with gr.TabItem("Cloud Endpoint", id=1, interactive=False, visible=False) as cloud:
+                    #             #with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
+                    #                 #gr.Markdown(info.cloud_prereqs)
+                    #             #with gr.Accordion("Instructions", open=False, elem_id="accordion"):
+                    #                 #gr.Markdown(info.cloud_info)
+                    #             #with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
+                    #                 #gr.Markdown(info.cloud_trouble)
                                 
-                                nvcf_model_family = gr.Dropdown(choices = ["Select", "NVIDIA"],
-                                                                           #"MistralAI", 
-                                                                           #"Meta", 
-                                                                           #"Google",
-                                                                           #"Microsoft", 
-                                                                           #"Snowflake",
-                                                                           #"IBM",
-                                                                           #"Upstage",
-                                                                           #"AI21 Labs"],
-                                                                value = "Select", 
-                                                                interactive = True,
-                                                                label = "Model family.", 
-                                                                elem_id="rag-inputs")
-                                nvcf_model_id = gr.Dropdown(choices = ["Select"], 
-                                                            value = "Select",
-                                                            interactive = True,
-                                                            label = "Select a model.", 
-                                                            visible = False,
-                                                            elem_id="rag-inputs")
+                    #             nvcf_model_family = gr.State("NVIDIA")
+                    #             #nvcf_model_family = gr.Dropdown(choices = ["Select", "NVIDIA"],
+                    #                                                        #"MistralAI", 
+                    #                                                        #"Meta", 
+                    #                                                        #"Google",
+                    #                                                        #"Microsoft", 
+                    #                                                        #"Snowflake",
+                    #                                                        #"IBM",
+                    #                                                        #"Upstage",
+                    #                                                        #"AI21 Labs"],
+                    #                                             # value = "Select", 
+                    #                                             # interactive = True,
+                    #                                             # label = "Model family.", 
+                    #                                             # elem_id="rag-inputs")
+                    #             nvcf_model_id = gr.State("Llama3 ChatQA-1.5 8B")
+                    #             # nvcf_model_id = gr.Dropdown(choices = ["Select"], 
+                    #             #                             value = "Select",
+                    #             #                             interactive = True,
+                    #             #                             label = "Select a model.", 
+                    #             #                             visible = False,
+                    #             #                             elem_id="rag-inputs")
 
-                            # Inference settings for self-hosted microservice inference mode
-                            with gr.TabItem("Self-Hosted Microservice", id=2, interactive=False, visible=False) as microservice:
-                                with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
-                                    gr.Markdown(info.nim_prereqs)
-                                with gr.Accordion("Instructions", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.nim_info)
-                                with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
-                                    gr.Markdown(info.nim_trouble)
+                    #         # Inference settings for self-hosted microservice inference mode
+                    #         with gr.TabItem("Self-Hosted Microservice", id=2, interactive=False, visible=False) as microservice:
+                    #             with gr.Accordion("Prerequisites", open=True, elem_id="accordion"):
+                    #                 gr.Markdown(info.nim_prereqs)
+                    #             with gr.Accordion("Instructions", open=False, elem_id="accordion"):
+                    #                 gr.Markdown(info.nim_info)
+                    #             with gr.Accordion("Troubleshooting", open=False, elem_id="accordion"):
+                    #                 gr.Markdown(info.nim_trouble)
         
-                                # User can run a microservice remotely via an endpoint, or as a local inference server.
-                                with gr.Tabs(selected=0) as nim_tabs:
+                    #             # User can run a microservice remotely via an endpoint, or as a local inference server.
+                    #             with gr.Tabs(selected=0) as nim_tabs:
 
-                                    # Inference settings for remotely-running microservice
-                                    with gr.TabItem("Remote", id=0) as remote_microservice:
-                                        remote_nim_msg = gr.Markdown("<br />Enter the details below. Then start chatting!")
+                    #                 # Inference settings for remotely-running microservice
+                    #                 with gr.TabItem("Remote", id=0) as remote_microservice:
+                    #                     remote_nim_msg = gr.Markdown("<br />Enter the details below. Then start chatting!")
                                         
-                                        with gr.Row(equal_height=True):
-                                            nim_model_ip = gr.Textbox(placeholder = "10.123.45.678", 
-                                                       label = "Microservice Host", 
-                                                       info = "IP Address running the microservice", 
-                                                       elem_id="rag-inputs", scale=2)
-                                            nim_model_port = gr.Textbox(placeholder = "8000", 
-                                                       label = "Port", 
-                                                       info = "Optional, (default: 8000)", 
-                                                       elem_id="rag-inputs", scale=1)
+                    #                     with gr.Row(equal_height=True):
+                    #                         nim_model_ip = gr.Textbox(placeholder = "10.123.45.678", 
+                    #                                    label = "Microservice Host", 
+                    #                                    info = "IP Address running the microservice", 
+                    #                                    elem_id="rag-inputs", scale=2)
+                    #                         nim_model_port = gr.Textbox(placeholder = "8000", 
+                    #                                    label = "Port", 
+                    #                                    info = "Optional, (default: 8000)", 
+                    #                                    elem_id="rag-inputs", scale=1)
                                         
-                                        nim_model_id = gr.Textbox(placeholder = "meta/llama3-8b-instruct", 
-                                                   label = "Model running in microservice.", 
-                                                   info = "If none specified, defaults to: meta/llama3-8b-instruct", 
-                                                   elem_id="rag-inputs")
+                    #                     nim_model_id = gr.Textbox(placeholder = "meta/llama3-8b-instruct", 
+                    #                                label = "Model running in microservice.", 
+                    #                                info = "If none specified, defaults to: meta/llama3-8b-instruct", 
+                    #                                elem_id="rag-inputs")
 
-                                    # Inference settings for locally-running microservice
-                                    with gr.TabItem("Local", id=1) as local_microservice:
-                                        gr.Markdown("<br />**Important**: For AI Workbench on DOCKER users only. Podman is unsupported!")
+                    #                 # Inference settings for locally-running microservice
+                    #                 with gr.TabItem("Local", id=1) as local_microservice:
+                    #                     gr.Markdown("<br />**Important**: For AI Workbench on DOCKER users only. Podman is unsupported!")
                                         
-                                        nim_local_model_id = gr.Textbox(placeholder = "nvcr.io/nim/meta/llama3-8b-instruct:latest", 
-                                                   label = "NIM Container Image", 
-                                                   elem_id="rag-inputs")
+                    #                     nim_local_model_id = gr.Textbox(placeholder = "nvcr.io/nim/meta/llama3-8b-instruct:latest", 
+                    #                                label = "NIM Container Image", 
+                    #                                elem_id="rag-inputs")
                                         
-                                        with gr.Row(equal_height=True):
-                                            prefetch_nim = gr.Button(value="Prefetch NIM", size="sm")
-                                            start_local_nim = gr.Button(value="Start Microservice", 
-                                                                        interactive=(True if os.path.isdir('/mnt/host-home/model-store') else False), 
-                                                                        size="sm")
-                                            stop_local_nim = gr.Button(value="Stop Microservice", interactive=False, size="sm")
+                    #                     with gr.Row(equal_height=True):
+                    #                         prefetch_nim = gr.Button(value="Prefetch NIM", size="sm")
+                    #                         start_local_nim = gr.Button(value="Start Microservice", 
+                    #                                                     interactive=(True if os.path.isdir('/mnt/host-home/model-store') else False), 
+                    #                                                     size="sm")
+                    #                         stop_local_nim = gr.Button(value="Stop Microservice", interactive=False, size="sm")
 
 
-                    # Final tab item consists of option to collapse the settings to reduce clutter on the UI
-                    #with gr.TabItem("Hide All Settings", id=3, visible=False) as hide_all_settings:
-                        #gr.Markdown("")
+                    # # Final tab item consists of option to collapse the settings to reduce clutter on the UI
+                    # #with gr.TabItem("Hide All Settings", id=3, visible=False) as hide_all_settings:
+                    #     #gr.Markdown("")
 
             # Hidden column to be rendered when the user collapses all settings.
             #with gr.Column(scale=1, min_width=100, visible=False) as hidden_settings_column:
                 #show_settings = gr.Button(value="< Expand", size="sm")
 
-        def _toggle_gated(models: List[str]) -> Dict[gr.component, Dict[Any, Any]]:
-            """" Event listener to toggle local models displayed to the user. """
-            if len(models) == 0:
-                choices = []
-                selected = ""
-            elif len(models) == 1 and models[0] == "Ungated Models":
-                choices = ["nvidia/Llama3-ChatQA-1.5-8B",
-                           "microsoft/Phi-3-mini-128k-instruct", "nvidia/Nemotron-Mini-4B-Instruct"]
-                selected = "nvidia/Llama3-ChatQA-1.5-8B"
-            elif len(models) == 1 and models[0] == "Gated Models":
-                choices = ["mistralai/Mistral-7B-Instruct-v0.1",
-                           "mistralai/Mistral-7B-Instruct-v0.2",
-                           "meta-llama/Llama-2-7b-chat-hf",
-                           "meta-llama/Meta-Llama-3-8B-Instruct"]
-                selected = "mistralai/Mistral-7B-Instruct-v0.1"
-            else: 
-                choices = ["nvidia/Llama3-ChatQA-1.5-8B", 
-                           "microsoft/Phi-3-mini-128k-instruct",
-                           "mistralai/Mistral-7B-Instruct-v0.1",
-                           "mistralai/Mistral-7B-Instruct-v0.2",
-                           "meta-llama/Llama-2-7b-chat-hf",
-                           "meta-llama/Meta-Llama-3-8B-Instruct"]
-                selected = "nvidia/Llama3-ChatQA-1.5-8B"
-            return {
-                local_model_id: gr.update(choices=choices, value=selected),
-            }
+        # def _toggle_gated(models: List[str]) -> Dict[gr.component, Dict[Any, Any]]:
+        #     """" Event listener to toggle local models displayed to the user. """
+        #     if len(models) == 0:
+        #         choices = []
+        #         selected = ""
+        #     elif len(models) == 1 and models[0] == "Ungated Models":
+        #         choices = ["nvidia/Llama3-ChatQA-1.5-8B",
+        #                    "microsoft/Phi-3-mini-128k-instruct", "nvidia/Nemotron-Mini-4B-Instruct"]
+        #         selected = "nvidia/Llama3-ChatQA-1.5-8B"
+        #     elif len(models) == 1 and models[0] == "Gated Models":
+        #         choices = ["mistralai/Mistral-7B-Instruct-v0.1",
+        #                    "mistralai/Mistral-7B-Instruct-v0.2",
+        #                    "meta-llama/Llama-2-7b-chat-hf",
+        #                    "meta-llama/Meta-Llama-3-8B-Instruct"]
+        #         selected = "mistralai/Mistral-7B-Instruct-v0.1"
+        #     else: 
+        #         choices = ["nvidia/Llama3-ChatQA-1.5-8B", 
+        #                    "microsoft/Phi-3-mini-128k-instruct",
+        #                    "mistralai/Mistral-7B-Instruct-v0.1",
+        #                    "mistralai/Mistral-7B-Instruct-v0.2",
+        #                    "meta-llama/Llama-2-7b-chat-hf",
+        #                    "meta-llama/Meta-Llama-3-8B-Instruct"]
+        #         selected = "nvidia/Llama3-ChatQA-1.5-8B"
+        #     return {
+        #         local_model_id: gr.update(choices=choices, value=selected),
+        #     }
 
-        gate_checkbox.change(_toggle_gated, [gate_checkbox], [local_model_id])
+        # gate_checkbox.change(_toggle_gated, [gate_checkbox], [local_model_id])
                 
-        def _toggle_info(btn: str) -> Dict[gr.component, Dict[Any, Any]]:
-            """" Event listener to toggle context and/or metrics panes visible to the user. """
-            if btn == "Show Context":
-                out = [True, False, False, False, True, True, False, True, False]
-            elif btn == "Hide Context":
-                out = [False, False, False, True, False, True, False, True, False]
-            elif btn == "Show Metrics":
-                out = [False, True, False, True, False, False, True, True, False]
-            elif btn == "Hide Metrics":
-                out = [False, False, False, True, False, True, False, True, False]
-            elif btn == "Show Documents":
-                out = [False, False, True, True, False, True, False, False, True]
-            elif btn == "Hide Documents":
-                out = [False, False, False, True, False, True, False, True, False]
-            return {
-                context: gr.update(visible=out[0]),
-                metrics: gr.update(visible=out[1]),
-                docs: gr.update(visible=out[2]),
-                ctx_show: gr.update(visible=out[3]),
-                ctx_hide: gr.update(visible=out[4]),
-                mtx_show: gr.update(visible=out[5]),
-                mtx_hide: gr.update(visible=out[6]),
-                doc_show: gr.update(visible=out[7]),
-                doc_hide: gr.update(visible=out[8]),
-            }
+        # def _toggle_info(btn: str) -> Dict[gr.component, Dict[Any, Any]]:
+        #     """" Event listener to toggle context and/or metrics panes visible to the user. """
+        #     if btn == "Show Context":
+        #         out = [True, False, False, False, True, True, False, True, False]
+        #     elif btn == "Hide Context":
+        #         out = [False, False, False, True, False, True, False, True, False]
+        #     elif btn == "Show Metrics":
+        #         out = [False, True, False, True, False, False, True, True, False]
+        #     elif btn == "Hide Metrics":
+        #         out = [False, False, False, True, False, True, False, True, False]
+        #     elif btn == "Show Documents":
+        #         out = [False, False, True, True, False, True, False, False, True]
+        #     elif btn == "Hide Documents":
+        #         out = [False, False, False, True, False, True, False, True, False]
+        #     return {
+        #         context: gr.update(visible=out[0]),
+        #         metrics: gr.update(visible=out[1]),
+        #         docs: gr.update(visible=out[2]),
+        #         ctx_show: gr.update(visible=out[3]),
+        #         ctx_hide: gr.update(visible=out[4]),
+        #         mtx_show: gr.update(visible=out[5]),
+        #         mtx_hide: gr.update(visible=out[6]),
+        #         doc_show: gr.update(visible=out[7]),
+        #         doc_hide: gr.update(visible=out[8]),
+        #     }
 
         #ctx_show.click(_toggle_info, [ctx_show], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
         #ctx_hide.click(_toggle_info, [ctx_hide], [context, metrics, docs, ctx_show, ctx_hide, mtx_show, mtx_hide, doc_show, doc_hide])
@@ -448,9 +507,15 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
 
         #show_settings.click(_toggle_show_all_settings, None, [settings_column, settings_tabs, hidden_settings_column])
 
-        def _toggle_model_download(btn: str, model: str, start: str, stop: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
+        def _toggle_model_download(btn: str, model: str, start: str, stop: str, inference_mode: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to download model weights locally for Hugging Face TGI local inference. """
-            if model != "nvidia/Llama3-ChatQA-1.5-8B" and model != "microsoft/Phi-3-mini-128k-instruct" and model != "" and os.environ.get('HUGGING_FACE_HUB_TOKEN') is None:
+            if inference_mode == "Cloud Endpoint":
+                return {
+                    download_model: gr.update(),
+                    start_local_server: gr.update(),
+                    stop_local_server: gr.update(),
+                }
+            elif model != "nvidia/Llama3-ChatQA-1.5-8B" and model != "microsoft/Phi-3-mini-128k-instruct" and model != "" and os.environ.get('HUGGING_FACE_HUB_TOKEN') is None:
                 gr.Warning("You are accessing a gated model and HUGGING_FACE_HUB_TOKEN is not detected!")
                 return {
                     download_model: gr.update(),
@@ -483,9 +548,9 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                     stop_local_server: gr.update(interactive=stop_interactive),
                 }
         
-        download_model.click(_toggle_model_download,
-                             [download_model, local_model_id, start_local_server, stop_local_server], 
-                             [download_model, start_local_server, stop_local_server, msg])
+        # download_model.click(_toggle_model_download,
+        #                      [download_model, local_model_id, start_local_server, stop_local_server], 
+        #                      [download_model, start_local_server, stop_local_server, msg])
 
         def _toggle_model_select(model: str, start: str, stop: str) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to select different models to use for Hugging Face TGI local inference. """
@@ -499,9 +564,9 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                 stop_local_server: gr.update(interactive=(False if stop == "Server Stopped" else True)),
             }
         
-        local_model_id.change(_toggle_model_select,
-                              [local_model_id, start_local_server, stop_local_server], 
-                              [download_model, start_local_server, stop_local_server])
+        #local_model_id.change(_toggle_model_select,
+                              #[local_model_id, start_local_server, stop_local_server], 
+                              #[download_model, start_local_server, stop_local_server])
 
         def _toggle_nvcf_family(family: str) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to select a different family of model for cloud endpoint inference. """
@@ -581,13 +646,21 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                placeholder=msg_value),
             }
         
-        nvcf_model_family.change(_toggle_nvcf_family,
-                              [nvcf_model_family], 
-                              [nvcf_model_id, submit_btn, msg])
+        # nvcf_model_family.change(_toggle_nvcf_family,
+        #                       [nvcf_model_family], 
+        #                       [nvcf_model_id, submit_btn, msg])
 
-        def _toggle_local_server(btn: str, model: str, quantize: str, download: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
+        def _toggle_local_server(btn: str, model: str, quantize: str, download: str, inference_mode: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to run and/or shut down the Hugging Face TGI local inference server. """
-            if model != "nvidia/Llama3-ChatQA-1.5-8B" and model != "microsoft/Phi-3-mini-128k-instruct" and model != "" and btn != "Stop Server" and os.environ.get('HUGGING_FACE_HUB_TOKEN') is None:
+            if inference_mode == "Cloud Endpoint":
+                return {
+                    start_local_server: gr.update(),
+                    stop_local_server: gr.update(),
+                    msg: gr.update(),
+                    submit_btn: gr.update(),
+                    download_model: gr.update(),
+                }
+            elif model != "nvidia/Llama3-ChatQA-1.5-8B" and model != "microsoft/Phi-3-mini-128k-instruct" and model != "" and btn != "Stop Server" and os.environ.get('HUGGING_FACE_HUB_TOKEN') is None:
                 gr.Warning("You are accessing a gated model and HUGGING_FACE_HUB_TOKEN is not detected!")
                 return {
                     start_local_server: gr.update(),
@@ -641,13 +714,13 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                     download_model: gr.update(interactive=interactive[3]),
                 }
 
-        start_local_server.click(_toggle_local_server, 
-                                 [start_local_server, local_model_id, local_model_quantize, download_model], 
-                                 [start_local_server, stop_local_server, msg, submit_btn, download_model])
-        stop_local_server.click(_toggle_local_server, 
-                                 [stop_local_server, local_model_id, local_model_quantize, download_model], 
-                                 [start_local_server, stop_local_server, msg, submit_btn, download_model])    
-
+        # start_local_server.click(_toggle_local_server, 
+        #                          [start_local_server, local_model_id, local_model_quantize, download_model], 
+        #                          [start_local_server, stop_local_server, msg, submit_btn, download_model])
+        # stop_local_server.click(_toggle_local_server, 
+        #                          [stop_local_server, local_model_id, local_model_quantize, download_model], 
+        #                          [start_local_server, stop_local_server, msg, submit_btn, download_model])    
+        
         def _toggle_nim_select(model: str, start: str, stop: str) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to set up user actions for local nim inference. """
             return {
@@ -877,45 +950,45 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                   prefetch_nim,
                                   msg])
 
-        def _lock_tabs(btn: str, 
-                       start_local_server: str, 
-                       which_nim_tab: int, 
-                       nvcf_model_family: str, 
-                       progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
-            """ Event listener to lock settings options with the user selected inference mode. """
-            if btn == "Local System":
-                if start_local_server == "Server Started":
-                    interactive=True
-                else: 
-                    interactive=False
-                return {
-                    tabs: gr.update(selected=0),
-                    msg: gr.update(interactive=True, 
-                                   placeholder=("Enter text and press SUBMIT" if interactive else "[NOT READY] Start the Local Inference Server OR Select a Different Inference Mode.")),
-                    inference_mode: gr.update(info="To use your LOCAL GPU for inference, start the Local Inference Server before making a query."),
-                    submit_btn: gr.update(value="Submit" if interactive else "[NOT READY] Submit", interactive=interactive),
-                }
-            elif btn == "Cloud Endpoint":
-                if nvcf_model_family == "Select":
-                    interactive=False
-                else: 
-                    interactive=True
-                return {
-                    tabs: gr.update(selected=1),
-                    msg: gr.update(interactive=True, placeholder=("Enter text and press SUBMIT" if interactive else "[NOT READY] Select a model OR Select a Different Inference Mode.")),
-                    inference_mode: gr.update(info="To use a CLOUD endpoint for inference, select the desired model before making a query."),
-                    submit_btn: gr.update(value="Submit" if interactive else "[NOT READY] Submit", interactive=interactive),
-                }
-            elif btn == "Self-Hosted Microservice":
-                return {
-                    tabs: gr.update(selected=2),
-                    msg: gr.update(interactive=True, placeholder="Enter text and press SUBMIT" if (which_nim_tab == 0) else "[NOT READY] Start the Local Microservice OR Select a Different Inference Mode."),
-                    inference_mode: gr.update(info="To use a MICROSERVICE for inference, input the endpoint (and/or model) before making a query."),
-                    submit_btn: gr.update(value="Submit" if (which_nim_tab == 0) else "[NOT READY] Submit",
-                                          interactive=True if (which_nim_tab == 0) else False),
-                }
-        
-        inference_mode.change(_lock_tabs, [inference_mode, start_local_server, which_nim_tab, nvcf_model_family], [tabs, msg, inference_mode, submit_btn])
+        # def _lock_tabs(btn: str, 
+        #                start_local_server: str, 
+        #                which_nim_tab: int, 
+        #                nvcf_model_family: str, 
+        #                progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
+        #     """ Event listener to lock settings options with the user selected inference mode. """
+        #     if btn == "Local System":
+        #         if start_local_server == "Server Started":
+        #             interactive=True
+        #         else: 
+        #             interactive=False
+        #         return {
+        #             tabs: gr.update(selected=0),
+        #             msg: gr.update(interactive=True, 
+        #                            placeholder=("Enter text and press SUBMIT" if interactive else "[NOT READY] Start the Local Inference Server OR Select a Different Inference Mode.")),
+        #             inference_mode: gr.update(info="To use your LOCAL GPU for inference, start the Local Inference Server before making a query."),
+        #             submit_btn: gr.update(value="Submit" if interactive else "[NOT READY] Submit", interactive=interactive),
+        #         }
+        #     elif btn == "Cloud Endpoint":
+        #         if nvcf_model_family == "Select":
+        #             interactive=False
+        #         else: 
+        #             interactive=True
+        #         return {
+        #             tabs: gr.update(selected=1),
+        #             msg: gr.update(interactive=True, placeholder=("Enter text and press SUBMIT" if interactive else "[NOT READY] Select a model OR Select a Different Inference Mode.")),
+        #             inference_mode: gr.update(info="To use a CLOUD endpoint for inference, select the desired model before making a query."),
+        #             submit_btn: gr.update(value="Submit" if interactive else "[NOT READY] Submit", interactive=interactive),
+        #         }
+        #     elif btn == "Self-Hosted Microservice":
+        #         return {
+        #             tabs: gr.update(selected=2),
+        #             msg: gr.update(interactive=True, placeholder="Enter text and press SUBMIT" if (which_nim_tab == 0) else "[NOT READY] Start the Local Microservice OR Select a Different Inference Mode."),
+        #             inference_mode: gr.update(info="To use a MICROSERVICE for inference, input the endpoint (and/or model) before making a query."),
+        #             submit_btn: gr.update(value="Submit" if (which_nim_tab == 0) else "[NOT READY] Submit",
+        #                                   interactive=True if (which_nim_tab == 0) else False),
+        #         }
+
+        # inference_mode.change(_lock_tabs, [inference_mode, start_local_server, which_nim_tab, nvcf_model_family], [tabs, msg, inference_mode, submit_btn])
 
         def _toggle_kb(btn: str, docs_uploaded, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to clear the vector database of all documents. """
@@ -961,33 +1034,33 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                                    ".tex"], 
                                        file_count="multiple"),
                 clear_docs: gr.update(value=out[0], variant=colors[0], interactive=interactive[0]),
-                kb_checkbox: gr.update(value=None),
+                #kb_checkbox: gr.update(value=None),
                 docs: gr.update(value=update_docs_uploaded),
                 docs_history: update_docs_uploaded,
             }
             
-        clear_docs.click(_toggle_kb, [clear_docs, docs_history], [clear_docs, file_output, kb_checkbox, msg, docs, docs_history])
+        clear_docs.click(_toggle_kb, [clear_docs, docs_history], [clear_docs, file_output, msg, docs, docs_history])
 
-        def _vdb_select(inf_mode: str, start_local: str, vdb_active: bool, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
-            """ Event listener to select the vector database settings top-level tab. """
-            progress(0.25, desc="Initializing Task")
-            time.sleep(0.25)
-            progress(0.5, desc="Awaiting Vector DB Readiness")
-            rc = subprocess.call("/bin/bash /project/code/scripts/check-database.sh ", shell=True)
-            if rc == 0:
-                if not vdb_active:
-                    gr.Info("The Vector Database is now ready for file upload. ")
-                interactive=True
-            else: 
-                gr.Warning("The Vector Database has timed out. Check Output > Chat on AI Workbench for the full logs. ")
-                interactive=False
-            progress(0.75, desc="Cleaning Up")
-            time.sleep(0.25)
-            return [True if rc == 0 else False,
-                    gr.update(interactive=interactive), 
-                    gr.update(interactive=interactive)]
+        # def _vdb_select(inf_mode: str, start_local: str, vdb_active: bool, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
+        #     """ Event listener to select the vector database settings top-level tab. """
+        #     progress(0.25, desc="Initializing Task")
+        #     time.sleep(0.25)
+        #     progress(0.5, desc="Awaiting Vector DB Readiness")
+        #     rc = subprocess.call("/bin/bash /project/code/scripts/check-database.sh ", shell=True)
+        #     if rc == 0:
+        #         if not vdb_active:
+        #             gr.Info("The Vector Database is now ready for file upload. ")
+        #         interactive=True
+        #     else: 
+        #         gr.Warning("The Vector Database has timed out. Check Output > Chat on AI Workbench for the full logs. ")
+        #         interactive=False
+        #     progress(0.75, desc="Cleaning Up")
+        #     time.sleep(0.25)
+        #     return [True if rc == 0 else False,
+        #             gr.update(interactive=interactive), 
+        #             gr.update(interactive=interactive)]
             
-        vdb_settings.select(_vdb_select, [inference_mode, start_local_server, vdb_active], [vdb_active, file_output, clear_docs])
+        # vdb_settings.select(_vdb_select, [inference_mode, start_local_server, vdb_active], [vdb_active, file_output, clear_docs])
 
         def _document_upload(files, docs_uploaded, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to upload documents to the vector database. """
@@ -1011,14 +1084,15 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                     update_docs_uploaded.update({str(file.split('/')[-1]): "Failed to Upload"})
             return {
                 file_output: gr.update(value=file_paths), 
-                kb_checkbox: gr.update(value="Toggle to use Vector Database" if success else None),
+                #kb_checkbox: gr.update(value="Toggle to use Vector Database" if success else None),
                 docs: gr.update(value=update_docs_uploaded),
                 docs_history: update_docs_uploaded,
+                clear_docs: gr.update(interactive=True)
             }
 
-        file_output.upload(_document_upload, [file_output, docs_history], [file_output, kb_checkbox, docs, docs_history])
+        file_output.upload(_document_upload, [file_output, docs_history], [file_output, docs, docs_history, clear_docs])
 
-        def _toggle_rag_start(btn: str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
+        def _toggle_rag_start(btn: str, inference_mode:str, progress=gr.Progress()) -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to initialize the RAG backend API server and start warming up the vector database. """
             progress(0.25, desc="Initializing Task")
             time.sleep(0.25)
@@ -1027,8 +1101,8 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
             if rc == 2:
                 gr.Info("Inferencing is ready, but the Vector DB may still be spinning up. This can take a few moments to complete. ")
                 visibility = [False, True, True, True]
-                interactive = [False, True, True, False]
-                submit_value="[NOT READY] Submit"
+                interactive = [False, True, True, False] if inference_mode == "Local System" else [False, True, True, True]
+                submit_value="[NOT READY] Submit" if inference_mode == "Local System" else "Submit"
             elif rc == 0:
                 visibility = [False, True, True, True]
                 interactive = [False, True, True, False]
@@ -1042,14 +1116,31 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
             time.sleep(0.25)
             return {
                 setup_settings: gr.update(visible=visibility[0], interactive=interactive[0]), 
-                inf_settings: gr.update(visible=visibility[1], interactive=interactive[1]),
+                #inf_settings: gr.update(visible=visibility[1], interactive=interactive[1]),
                 vdb_settings: gr.update(visible=visibility[2], interactive=interactive[2]),
                 submit_btn: gr.update(value=submit_value, interactive=interactive[3]),
                 #hide_all_settings: gr.update(visible=visibility[3]),
-                msg: gr.update(interactive=True, placeholder="[NOT READY] Select a model OR Select a Different Inference Mode." if rc != 1 else "Enter text and press SUBMIT"),
+                msg: gr.update(interactive=True, placeholder="[NOT READY] Select a model OR Select a Different Inference Mode." if rc != 1 and inference_mode == "Local System" else "Enter text and press SUBMIT"),
             }
         
-        rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, inf_settings, vdb_settings, submit_btn, msg])
+        # rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, inf_settings, vdb_settings, submit_btn, msg])
+        # rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, vdb_settings, submit_btn, msg])#.then(_toggle_model_download,
+            # [download_model, local_model_id, start_local_server, stop_local_server], 
+            # [download_model, start_local_server, stop_local_server, msg]).then(_toggle_local_server, 
+            # [start_local_server, local_model_id, local_model_quantize, download_model], 
+            # [start_local_server, stop_local_server, msg, submit_btn, download_model])
+
+        # def _update_submit():
+        #     return { submit_btn: gr.update(value="Submit", interactive=True) }
+
+        # if inference_mode == "Cloud Endpoint":
+        #     rag_start_button.click(_toggle_rag_start, [rag_start_button], [setup_settings, vdb_settings, submit_btn, msg])#.then(_update_submit, None, [submit_btn])
+        # else:
+        rag_start_button.click(_toggle_rag_start, [rag_start_button, inference_mode], [setup_settings, vdb_settings, submit_btn, msg]).then(_toggle_model_download,
+            [download_model, local_model_id, start_local_server, stop_local_server, inference_mode],
+            [download_model, start_local_server, stop_local_server, msg]).then(_toggle_local_server,
+            [start_local_server, local_model_id, local_model_quantize, download_model, inference_mode], 
+            [start_local_server, stop_local_server, msg, submit_btn, download_model])
 
         def _toggle_remote_ms() -> Dict[gr.component, Dict[Any, Any]]:
             """ Event listener to select the remote-microservice inference mode for microservice inference. """
@@ -1091,8 +1182,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
         # form actions
         _my_build_stream = functools.partial(_stream_predict, client)
         msg.submit(
-            _my_build_stream, [kb_checkbox, 
-                               inference_mode, 
+            _my_build_stream, [inference_mode, 
                                nvcf_model_id, 
                                nim_model_ip, 
                                nim_model_port, 
@@ -1111,8 +1201,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
                                chatbot], [msg, chatbot, context, metrics, metrics_history]
         )
         submit_btn.click(
-            _my_build_stream, [kb_checkbox, 
-                               inference_mode, 
+            _my_build_stream, [inference_mode, 
                                nvcf_model_id, 
                                nim_model_ip, 
                                nim_model_port, 
@@ -1136,7 +1225,7 @@ def build_page(client: chat_client.ChatClient) -> gr.Blocks:
 
 def _stream_predict(
     client: chat_client.ChatClient,
-    use_knowledge_base: List[str],
+    #use_knowledge_base: List[str],
     inference_mode: str,
     nvcf_model_id: str,
     nim_model_ip: str,
@@ -1182,6 +1271,7 @@ def _stream_predict(
     Returns:
         (Dict[gr.component, Dict[Any, Any]]): Gradio components to update.
     """
+    use_knowledge_base=["1"]
     chunks = ""
     _LOGGER.info(
         "processing inference request - %s",
