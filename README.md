@@ -49,7 +49,8 @@ Now that the system is set up, you can run Finexial:
 3. Upload your document(s) in pdf.
 4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At any time you can start again from scratch by clearing your chat history (``CLEAR HISTORY`` button) or remove the document(s) uploaded (``CLEAR DATABASE`` button).
 
-As an example, I am using [Nvidia's official Financial Results for Q3 2024](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2024).
+### Example
+Let's try Finexial with [Nvidia's official Financial Results for Q3 2024](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2024).
 
 ![Finexial example1](code/chatui/static/Finexial_example_1.png)
 ![Finexial example2](code/chatui/static/Finexial_example_2b.png)
