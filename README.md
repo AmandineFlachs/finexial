@@ -1,5 +1,7 @@
-# Finexial [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
+# ![Finexial logo](code/chatui/static/Finexial_logo.png) Finexial [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
 ### Finexial is an AI-powered tool designed to to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
+![Finexial starting interface](code/chatui/static/Finexial_start.png)
+
 
 ## Project summary 
 
