@@ -1,5 +1,5 @@
 # Finexial [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
-### Finexial is an AI-powered tool designed to understand financial reports, discuss reports' outcome and explain any financial jargon.
+### Finexial is an AI-powered tool designed to to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
 
 ## Project summary 
 
@@ -23,7 +23,7 @@ It aims to help non-financial employees make the most of their financial data an
 
 The following files are included in the repository
 
-IMAGE TO ADD
+![GitHub_Files](code/chatui/static/GitHub_files.png)
 
 ## Set up and run Finexial
 
@@ -47,7 +47,9 @@ Now that the system is set up, you can run Finexial:
 1. Choose your inference mode (local or cloud).
 2. Click on the button ``START FINEXIAL``.
 3. Upload your document(s) in pdf.
-4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At any time you can start again from scratch by clearing your chat history (``CLEAR HISTORY`` button) or remove the document(s) uploaded (``CLEAR DATABASE`` button). 
+4. Use the chat box to ask questions about the reports and documents uploaded using natural language. At any time you can start again from scratch by clearing your chat history (``CLEAR HISTORY`` button) or remove the document(s) uploaded (``CLEAR DATABASE`` button).
+
+![Finexial example](code/chatui/static/Finexial_example_1.png)
 
 ### Hardware requirements for local inference
 
@@ -55,7 +57,7 @@ While there are no hardware requirements for cloud inference, if you are running
 
 ## How it works
 
-IMAGE TECH ARCHITECTURE
+![Finexial technical architecture](code/chatui/static/Finexial_architecture.png)
     
 # License
 This project is under the Apache 2.0 License.
