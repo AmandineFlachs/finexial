@@ -1,4 +1,3 @@
-![Finexial logo](code/chatui/static/Finexial_logo.png)
 # Finexial [![Open In AI Workbench](https://img.shields.io/badge/Open_In-AI_Workbench-76B900)](https://github.com/AmandineFlachs/finexial.git)
 ### Finexial is an AI-powered tool designed to to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
 ![Finexial starting interface](code/chatui/static/Finexial_start.png)
@@ -70,3 +69,5 @@ While there are no hardware requirements for cloud inference, if you are running
 This project is under the Apache 2.0 License.
 
 This project may download and install additional third-party open source software projects. Review the license terms of these open source projects before use. Third party components used as part of this project are subject to their separate legal notices or terms that accompany the components. You are responsible for confirming compliance with third-party component license terms and requirements. 
+
+![Finexial logo](code/chatui/static/Finexial_logo.png)
