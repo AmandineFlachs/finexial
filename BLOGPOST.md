@@ -1,1 +1,1 @@
-### Finexial is an AI-powered tool designed to to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
+### Finexial is an AI-powered tool designed to help non-financial employees make the most of their financial data and feel more confident working with large financial reports.
