@@ -28,7 +28,7 @@ By democratizing access to financial insights, Finexial stands to transform how 
 - Empowered Decision-Making: With easier access to financial insights, employees at all levels can make more informed, data-backed decisions, aligning their actions more closely with company financial goals.
 
 ### Looking Ahead
-While Finexial represents a significant step forward in making financial data more accessible, it's just the beginning. Future developments could include:
+While Finexial represents a significant step forward in making financial data more accessible, faces some limitations. It occasionally generates inaccurate data due to model hallucinations (a common problem with LLMs) and struggles with table-only documents like P&L statements. These limitations necessitate cautious use alongside human expertise. Future developments could include:
 
 - Enhanced model performance through continuous evaluation and fine-tuning.
 - Exploration of smaller models for broader hardware compatibility and/or distillation.
