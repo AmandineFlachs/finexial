@@ -9,6 +9,8 @@ Companies expect 70% of their employees to heavily use data to make decisions by
 
 Finexial is an AI project created for the [HackAI - Dell and NVIDIA Challenge](https://hackaichallenge.devpost.com) and is designed to help employees from non-financial departments make the most of their financial data and feel more confident working with large quantities of data-heavy documents. Finexial relies on a Large Language Model (LLM) and Retrieval Augmented Generation (RAG) to allow users to query their financial documents and reports using natural language.
 
+<a href=”https://youtu.be/w2hOXJhc3rs”>![Youtube](code/chatui/static/thumbnailYT.png) </a>
+
 ## Repository
 
 The following files are included in the repository
@@ -51,8 +53,7 @@ While there are no hardware requirements for cloud inference, if you are running
 
 ## How it works
 
-![Finexial technical architecture](code/chatui/static/Finexial_architecture.png){width=50%}
-<a href=”https://youtu.be/w2hOXJhc3rs”>![Youtube](code/chatui/static/thumbnailYT.png) </a>
+![Finexial technical architecture](code/chatui/static/Finexial_architecture.png)
     
 # License
 This project is under the Apache 2.0 License.
