@@ -52,6 +52,7 @@ While there are no hardware requirements for cloud inference, if you are running
 ## How it works
 
 ![Finexial technical architecture](code/chatui/static/Finexial_architecture.png)
+<a href=”https://youtu.be/w2hOXJhc3rs”>![Youtube](code/chatui/static/thumbnailYT.png) </a>
     
 # License
 This project is under the Apache 2.0 License.
