@@ -39,3 +39,4 @@ My background in tech startups has given me a solid understanding of technology,
 
 As we move towards a future where data literacy is not just an advantage but a necessity, tools like Finexial will play a crucial role in bridging the knowledge gap and empowering employees across all sectors of a business.
 
+[![Youtube video](code/chatui/static/thumbnailYT.png)](https://youtu.be/w2hOXJhc3rs)
